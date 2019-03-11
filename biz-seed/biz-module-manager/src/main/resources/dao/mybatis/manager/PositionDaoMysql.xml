@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.company.seed.module.manager.dao.PositionDao">
+	<resultMap id="PositionModelResult" type="PositionModel">
+		<id property="id" column="FId"/>
+		<result property="name" column="FName"/>
+		<result property="status" column="FStatus"/>
+		<result property="parentId" column="FKParentId"/>
+	</resultMap>
+
+	<insert id="insertPosition" parameterType="PositionModel">
+		insert into test.t_base_position(FId,FName,FStatus)
+			 values(#{id},#{name},#{status})
+	</insert>
+
+	<update id="updatePosition" parameterType="PositionModel">
+		update test.t_base_position
+		<set>
+			<if test="name!=null">FName=#{name},</if>
+			<if test="status!=null">FStatus=#{status},</if>
+		</set>
+		where fid=#{id}
+	</update>
+	
+	<select id="selectAll" resultMap="PositionModelResult" >
+		select * from test.t_base_position
+	</select>
+
+</mapper>

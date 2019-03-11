@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	   http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
+
+    <bean id="userSearcherForHost" class="com.company.seed.module.user.solr.local.searcher.UserSearcherForHost" init-method="initSolrTemplate">
+         <property name="solrServerFactory" ref="solrServerFactory" />
+         <property name="solrServerUrl"><value>${module.solr.user.hosturl}</value></property>
+    </bean>
+
+    <bean id="userSearcher" class="com.company.seed.module.user.solr.local.searcher.UserSearcherForZk" init-method="initSolrTemplate">
+        <property name="solrServerFactory" ref="solrServerFactory"/>
+        <property name="solrNames">
+            <map key-type="java.lang.String">
+                <entry key="USER" value="user"/>
+            </map>
+        </property>
+        <property name="zkHostS">
+            <map key-type="java.lang.String">
+                <entry key="USER" value="${module.solr.user.zkurl}"/>
+            </map>
+        </property>
+        <property name="defaultZkHost" value="${module.solr.user.zkurl}"/>
+        <property name="defaultSolrName" value="user"/>
+        <property name="zkClientTimeout" value="30000"/>
+        <property name="zkConnectTimeout" value="30000"/>
+    </bean>
+</beans>

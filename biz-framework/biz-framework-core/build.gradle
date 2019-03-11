@@ -1,0 +1,11 @@
+dependencies {
+    compile (
+            [group: 'org.springframework', name: 'spring-context', version: "${spring_version}"],
+            [group: 'org.springframework', name: 'spring-context-support', version: "${spring_version}"],
+            [group: 'org.apache.velocity', name: 'velocity', version: "${velocity_version}"],
+            [group: 'eu.bitwalker', name: 'UserAgentUtils', version: "${eu_bitwalker_UserAgentUtils_version}"],
+            [group: 'mysql', name: 'mysql-connector-java', version: "${mysql_version}"],
+            [group: 'dom4j', name: 'dom4j', version: "${dom4j_version}"]
+    )
+    provided group: 'javax.servlet', name: 'javax.servlet-api', version: "${servlet_api_version}"
+}

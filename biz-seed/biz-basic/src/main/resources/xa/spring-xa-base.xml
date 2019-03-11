@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<!--
+        <bean id="dataSourceXA" class="com.alibaba.druid.pool.xa.DruidXADataSource" init-method="init" destroy-method="close">
+            <property name="url" value="${basic.mysql.url}" />
+            <property name="username" value="${basic.mysql.username}" />
+            <property name="password" value="${basic.mysql.password}" />
+            <property name="proxyFilters">
+                <list>
+                    <ref bean="stat-filter" />
+                </list>
+            </property>
+        </bean>
+
+        <bean id="dataSource" parent="abstractXADataSource"
+              init-method="init" destroy-method="close">
+            <property name="uniqueResourceName">
+                <value>mysql/dataSourceXA</value>
+            </property>
+            <property name="xaDataSource">
+                <ref bean="dataSourceXA
+            </property>
+        </bean> -->
+
+	<bean id="abstractXADataSource" class="com.atomikos.jdbc.AtomikosDataSourceBean" init-method="init"
+		  destroy-method="close" abstract="true">
+		<property name="maxPoolSize" value="30"/>
+		<property name="borrowConnectionTimeout" value="60"/>
+		<property name="reapTimeout" value="20"/>
+		<!-- 最大空闲时间 -->
+		<property name="maxIdleTime" value="60"/>
+		<!--<property name="maxLifetime" value="5" />-->
+		<property name="maintenanceInterval" value="60"/>
+		<property name="loginTimeout" value="60"/>
+		<property name="testQuery">
+			<value>select 1</value>
+		</property>
+	</bean>
+
+
+	<bean id="atomikosTransactionManager" class="com.atomikos.icatch.jta.UserTransactionManager"
+		  init-method="init" destroy-method="close">
+		<property name="forceShutdown">
+			<value>true</value>
+		</property>
+	</bean>
+	<bean id="atomikosUserTransaction" class="com.atomikos.icatch.jta.UserTransactionImp">
+		<property name="transactionTimeout" value="30" />
+	</bean>
+	<bean id="jtaTransactionManager"
+		  class="org.springframework.transaction.jta.JtaTransactionManager">
+		<property name="transactionManager">
+			<ref bean="atomikosTransactionManager"/>
+		</property>
+		<property name="userTransaction">
+			<ref bean="atomikosUserTransaction"/>
+		</property>
+		<!-- 必须设置，否则程序出现异常 JtaTransactionManager does not support custom isolation levels by default -->
+		<property name="allowCustomIsolationLevels" value="true"/>
+	</bean>
+	<!--
+	<tx:advice id="jtaTxAdvice" transaction-manager="jtaTransactionManager">
+		<tx:attributes>
+			<tx:method name="jtaAdd*" rollback-for="Exception" />
+			<tx:method name="jtaSave*" rollback-for="Exception" />
+			<tx:method name="jtaUpdate*" rollback-for="Exception" />
+			<tx:method name="jtaDelete*" rollback-for="Exception" />
+			<tx:method name="jtaMerge*" rollback-for="Exception" />
+			<tx:method name="jtaRequiresNew*" propagation="REQUIRES_NEW" rollback-for="Exception"/>
+			<tx:method name="jtaNested*" propagation="NESTED" rollback-for="Exception"/>
+		</tx:attributes>
+	</tx:advice>
+
+	<aop:config>
+		<aop:advisor pointcut="execution(* *..*Service*.*(..))" advice-ref="jtaTxAdvice" />
+	</aop:config> -->
+</beans>

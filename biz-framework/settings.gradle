@@ -1,0 +1,6 @@
+rootProject.name = 'biz-framwork'
+include 'biz-framework-core'
+include 'biz-framework-component-notify'
+include 'biz-framework-component-logger'
+include 'biz-framework-component-payment'
+include 'biz-framework-component-web'

@@ -1,0 +1,31 @@
+{
+  "name": "biz-seed",
+  "version": "1.0.0",
+  "description": "种子工程静态页面",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server --display-modules --display-error-details --colors --hot --host 0.0.0.0 --port 8080",
+    "build": "webpack --config webpack.config.js --display-modules --profile --colors"
+  },
+  "keywords": [
+    "seed"
+  ],
+  "author": "yoara",
+  "license": "ISC",
+  "devDependencies": {
+    "css-loader": "^0.26.1",
+    "dot-loader": "^0.1.1",
+    "expose-loader": "^0.7.1",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "file-loader": "^0.9.0",
+    "glob": "^7.1.1",
+    "happypack": "^3.0.1",
+    "html-webpack-plugin": "^2.24.1",
+    "jquery": "^1.11.3",
+    "style-loader": "^0.13.1",
+    "url-loader": "^0.5.7",
+    "webpack": "^1.14.0",
+    "webpack-dev-server": "^1.16.2"
+  }
+}

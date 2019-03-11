@@ -1,0 +1,6 @@
+dependencies {
+    compile project(':biz-framework-core')
+    compile group: 'com.thoughtworks.xstream', name: 'xstream', version: "${com_thoughtworks_xstream_version}"
+
+    provided group: 'javax.servlet', name: 'javax.servlet-api', version: "${servlet_api_version}"
+}

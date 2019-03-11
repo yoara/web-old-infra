@@ -1,0 +1,4 @@
+dependencies {
+    compile project(':biz-framework-core')
+    compile group: 'javax.mail', name: 'mail', version: "${javax_mail_version}"
+}

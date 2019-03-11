@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.company.seed.module.user.dao.automapper.MapperDao">
+	<resultMap id="userResultMap" type="UserModel" >
+		<id column="id" property="id" />
+		<result column="name" property="name"/>
+		<result column="password" property="password"/>
+	</resultMap>
+
+	<select id="selectAllNoCount" resultMap="userResultMap" parameterType="map">
+		select * from t_user
+	</select>
+	<select id="selectAll" resultMap="userResultMap" parameterType="map">
+		select * from t_user
+	</select>
+	<select id="selectById" resultMap="userResultMap" parameterType="map">
+		select * from t_user
+		where id=#{id}
+	</select>
+	<select id="selectCount" resultMap="userResultMap" parameterType="int">
+		select id from t_user
+	</select>
+</mapper>

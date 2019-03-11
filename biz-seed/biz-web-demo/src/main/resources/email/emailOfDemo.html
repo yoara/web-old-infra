@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<title>邮件服务平台</title>
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+</head>
+<body style="background: #f8f8f8">
+<div class="emailBox" style="width:770px;margin:50px auto;padding:0px;font-size:12px;color:#4d4d4d">
+	<div style="background: #fff;height:auto;border-top:2px #6ab4f0 solid;">
+		<p class="logo" style="margin:8px 16px;">
+
+		</p>
+		<table style="margin: 25px;">
+			<tr>
+				<td width="84%">
+					<!--$customer.logoTop-->
+				</td>
+				<td><a href="javascript:void(0);" style="text-decoration: none;color:#45a1ed;font-family:'微软雅黑';font-size: 18px;">邮件服务平台</a></td>
+			</tr>
+		</table>
+		<div class="content" style="width:740px;background:#fff;margin-left:10px;">
+			<strong style="display:block;padding:0px 0 0 40px;">Hello，您好：</strong>
+			<div style="margin-left:74px;">
+				<p style="margin:24px 0px 8px 0px;line-height: 200%">
+					Web-Demo提示<br>
+					#foreach($element in $details)
+						$element <br>
+					#end
+				</p>
+				<p style="text-align:right;margin:24px 30px 0px 0px;color: #999">
+					<span style="display:inline-block;width:150px;text-align:center;line-height:170%">通用邮件提示<br><span style="margin-left: 10px;">$currentTime</span></span>
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

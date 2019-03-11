@@ -1,0 +1,13 @@
+dependencies {
+    compile project(':biz-framework-core')
+    compile group: 'cglib', name: 'cglib', version: "${cglib_version}"
+    compile group: 'org.springframework', name: 'spring-webmvc', version: "${spring_version}"
+    compile group: 'org.springframework', name: 'spring-jms', version: "${spring_version}"
+    compile group: 'org.apache.activemq', name: 'activemq-broker', version: "${activemq_version}"
+    compile group: 'org.apache.activemq', name: 'activemq-spring', version: "${activemq_version}"
+    compile group: 'org.apache.activemq', name: 'activemq-client', version: "${activemq_version}"
+    compile group: 'org.aspectj', name: 'aspectjrt', version: "${aspectj_version}"
+    compile group: 'org.aspectj', name: 'aspectjweaver', version: "${aspectj_version}"
+
+    provided group: 'javax.servlet', name: 'javax.servlet-api', version: "${servlet_api_version}"
+}

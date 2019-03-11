@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jms="http://www.springframework.org/schema/jms"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/jms
+	    http://www.springframework.org/schema/jms/spring-jms-4.3.xsd">
+
+
+    <jms:listener-container concurrency="60" acknowledge="client" connection-factory="connectionFactory" error-handler="JmsErrorHandler" >
+        <jms:listener id="queue_userInsertListener" destination="BIZ_MODULE_USER_USRE_INSERT_QUEUE"
+                      ref="userInsertQueueListener" />
+    </jms:listener-container>
+
+    <jms:listener-container connection-factory="connectionFactory2" error-handler="JmsErrorHandler" destination-type="durableTopic">
+        <jms:listener id="topic_userInsertListener" destination="BIZ_MODULE_USER_USRE_INSERT_TOPIC"
+                      ref="userInsertTopicListener"/>
+    </jms:listener-container>
+</beans>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:amq="http://activemq.apache.org/schema/core"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-4.3.xsd
+	http://activemq.apache.org/schema/core 
+	http://activemq.apache.org/schema/core/activemq-core-5.12.3.xsd">
+
+	<context:component-scan base-package="com.company.seed" />
+
+	<amq:connectionFactory id="amqConnectionFactory"
+		brokerURL="${basic.mqwork.url}" trustAllPackages="true" />
+	<!-- CachingConnectionFactory Definition, sessionCacheSize property is the 
+		number of sessions to cache -->
+	<bean id="connectionFactory"
+		class="org.springframework.jms.connection.CachingConnectionFactory">
+		<constructor-arg ref="amqConnectionFactory" />
+		<property name="exceptionListener" ref="jmsExceptionListener" />
+		<property name="sessionCacheSize" value="100" />
+	</bean>
+	<!-- JmsTemplate Definition -->
+	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<constructor-arg ref="connectionFactory" />
+	</bean>
+
+	<amq:connectionFactory id="amqConnectionFactory2" clientID="aaaa"
+						   brokerURL="${basic.mqwork.url}" trustAllPackages="true"/>
+	<!-- CachingConnectionFactory Definition, sessionCacheSize property is the
+		number of sessions to cache -->
+	<bean id="connectionFactory2"
+		  class="org.springframework.jms.connection.CachingConnectionFactory">
+		<constructor-arg ref="amqConnectionFactory2" />
+		<property name="exceptionListener" ref="jmsExceptionListener" />
+		<property name="sessionCacheSize" value="100" />
+	</bean>
+	<!-- JmsTemplate Definition -->
+	<bean id="jmsTemplate2" class="org.springframework.jms.core.JmsTemplate">
+		<constructor-arg ref="connectionFactory2" />
+	</bean>
+</beans>

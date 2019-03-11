@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>系统设置</title>
+    <script language="JavaScript" type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="../js/core.js"></script>
+    <script language="JavaScript" type="text/javascript" src="js/authority.js"></script>
+    <style>
+        .current{
+            border: solid;
+        }
+    </style>
+</head>
+<body>
+    <p>岗位管理</p>
+    <ul id="position">
+        <li pid="">岗位名：<input />岗位状态<input type="checkbox"/>
+            <input key="editPosition" type="button" value="新增"/></li>
+    </ul>
+
+    <p></p>
+    <p></p>
+    <p>manager管理</p>
+    <ul id="manager">
+        <li mid="">人员名：<input placeholder="默认密码123456"/>人员登录号：<input placeholder="手机号"/>
+            人员状态<input type="checkbox"/>所属岗位：<select key="positionSelect"></select>
+            <input key="editManager" type="button" value="新增"/></li>
+    </ul>
+
+    <p></p>
+    <p></p>
+    <p>权限配置管理<input type="button" id="initAuth" value="重置权限"></p>
+    <ul id="positionPa"></ul>
+    <ul id="authority"></ul>
+    <p></p>
+    <p></p>
+    <span id="result"></span>
+</body>
+</html>

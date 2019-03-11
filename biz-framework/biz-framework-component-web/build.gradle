@@ -1,0 +1,13 @@
+dependencies {
+    compile project(':biz-framework-core')
+    compile project(':biz-framework-component-logger')
+    compile group: 'javax.mail', name: 'mail', version: "${javax_mail_version}"
+    compile("org.springframework:spring-webmvc:${spring_version}")
+    compile("org.hibernate:hibernate-validator:${hibernate_validator_version}")
+    compile("org.aspectj:aspectjweaver:${aspectj_version}")
+    compile("org.aspectj:aspectjrt:${aspectj_version}")
+    compile("org.apache.commons:commons-pool2:${commons_pool2_version}")
+    compile("org.apache.poi:poi-ooxml:${poi_ooxml_version}")
+    compile("io.springfox:springfox-swagger2:${springfox_swagger_version}")
+    provided group: 'javax.servlet', name: 'javax.servlet-api', version: "${servlet_api_version}"
+}

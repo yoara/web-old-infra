@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+		xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:component-scan base-package="org.yoara.framework.component.notify" />
+
+	<bean id="commonEmailSender" class="org.yoara.framework.component.notify.core.mail.MailSenderPool">
+		<property name="senderKey" value="commonEmailSender" />
+		<property name="mailSenderList">
+			<list value-type="org.yoara.framework.component.notify.core.mail.MailSender" >
+				<bean id="commonEmailSender_1" class="org.yoara.framework.component.notify.core.mail.MailSender">
+					<property name="defaultEncoding" value="utf-8" />
+					<property name="host" value="smtp.126.com" />
+					<property name="username" value="bizadmin@126.com" />
+					<property name="password" value="654321Aa" />
+					<property name="senderCode" value="邮件平台&lt;bizadmin@126.com&gt;" />
+					<property name="javaMailProperties">
+						<props>
+							<prop key="mail.smtp.auth">true</prop>
+						</props>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+</beans>

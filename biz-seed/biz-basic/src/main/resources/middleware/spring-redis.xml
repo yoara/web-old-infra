@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+	">
+
+	<bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+		<property name="hostName" value="${basic.redis.save.url}" />
+		<property name="port" value="${basic.redis.save.port}" />
+		<property name="poolConfig" ref="jedisPoolConfig"/>
+	</bean>
+
+	<bean id="jedisConnectionFactoryQuery" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+		<property name="hostName" value="${basic.redis.query.url}" />
+		<property name="port" value="${basic.redis.query.port}" />
+		<property name="poolConfig" ref="jedisPoolConfig"/>
+	</bean>
+
+	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+		<property name="maxTotal" value="100"/>
+		<property name="maxIdle" value="5"/>
+		<property name="maxWaitMillis" value="20000"/>
+	</bean>
+
+	<bean id="jedisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+		<property name="connectionFactory" ref="jedisConnectionFactory" />
+		<property name="keySerializer">
+			<bean class="org.springframework.data.redis.serializer.StringRedisSerializer" />
+		</property>
+		<property name="hashKeySerializer">
+			<bean class="org.springframework.data.redis.serializer.StringRedisSerializer" />
+		</property>
+	</bean>
+
+	<bean id="jedisTemplateQuery" class="org.springframework.data.redis.core.RedisTemplate">
+		<property name="connectionFactory" ref="jedisConnectionFactoryQuery" />
+		<property name="keySerializer">
+			<bean class="org.springframework.data.redis.serializer.StringRedisSerializer" />
+		</property>
+		<property name="hashKeySerializer">
+			<bean class="org.springframework.data.redis.serializer.StringRedisSerializer" />
+		</property>
+	</bean>
+
+	<bean id="redisCache" class="com.company.seed.cache.impl.RedisCacheImpl">
+		<property name="redis">
+			<map key-type="java.lang.String">
+				<entry key="QUERY" value-ref="jedisTemplateQuery"></entry>
+				<entry key="SAVE" value-ref="jedisTemplate"></entry>
+			</map>
+		</property>
+	</bean>
+</beans>

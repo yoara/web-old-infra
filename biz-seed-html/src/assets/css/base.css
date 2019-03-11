@@ -1,0 +1,173 @@
+/* body {
+  min-width: 1280px;
+}
+ */
+
+body {
+  font-family: Arial, "Microsoft YaHei", "\5fae\8f6f\96c5\9ed1", sans-serif;
+}
+
+input,
+select,
+button {
+  outline: none;
+}
+
+li,
+ol,
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+.pr {
+  position: relative;
+}
+
+.pb {
+  position: absolute;
+}
+
+.ellips {
+  overflow: hidden;
+  white-space: nowrap;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+}
+
+
+/* 浮动 */
+
+.fl {
+  float: left;
+}
+
+.fr {
+  float: right;
+}
+
+.clearfix:before,
+.clearfix:after {
+  content: "";
+  display: table;
+}
+
+.clearfix:after {
+  clear: both;
+}
+
+.clearfix {
+  *zoom: 1;
+}
+
+.tc {
+  text-align: center;
+}
+
+.tl {
+  text-align: left;
+}
+
+.tr {
+  text-align: right;
+}
+
+.dn {
+  display: none;
+}
+
+.db {
+  display: block;
+}
+
+
+/* 边距 */
+
+.pt20 {
+  padding-top: 20px;
+}
+
+.mt20 {
+  margin-top: 20px;
+}
+
+
+/* 背景色 */
+
+.bg-ff9 {
+  background: #ff9911;
+}
+
+.bg-65c {
+  background: #65c560;
+}
+
+.bg-e98 {
+  background: #e98e15;
+}
+
+
+/* 文字颜色 */
+
+.c-f91 {
+  color: #f91;
+}
+
+.c-f93 {
+  color: #f93;
+}
+
+.c-333 {
+  color: #333;
+}
+
+.c-fff {
+  color: #fff;
+}
+
+
+/*content start*/
+
+.main-content {
+  color: #333;
+  width: 1000px;
+  margin: 0 auto;
+}
+
+.fixedly {
+  position: fixed;
+  top: 0;
+  width: 1000px;
+  z-index: 20;
+  background-color: #f5f5f5;
+}
+
+.triangle-up,
+.triangle-down {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+
+/*content end*/
+
+
+/* slick */
+
+.slick-slide:focus {
+  outline: none;
+}
+
+.slick-next:before,
+.slick-prev:before {
+  font-size: 35px!important;
+}
+
+.slick-disabled.slick-arrow:before {
+  color: #b0b0b0!important;
+}
+
+.slick-disabled.slick-arrow {
+  cursor: default!important;
+}

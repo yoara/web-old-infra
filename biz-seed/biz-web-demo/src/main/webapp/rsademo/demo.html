@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>RSA Demo</title>
+    <script language="JavaScript" type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="../js/core.js"></script>
+    <script language="JavaScript" type="text/javascript" src="js/jsbn.js"></script>
+    <script language="JavaScript" type="text/javascript" src="js/prng4.js"></script>
+    <script language="JavaScript" type="text/javascript" src="js/rng.js"></script>
+    <script language="JavaScript" type="text/javascript" src="js/rsa.js"></script>
+    <script language="JavaScript" type="text/javascript" src="js/jquery.md5.js"></script>
+    <script>
+        Package("com.company.rsademo");
+        com.company.rsademo = {
+            init: function(){
+                this.initFun.initAlias();
+                this.initEvent();
+                this.initInfo();
+            },
+            initInfo: function(){
+
+            },
+            initEvent: function(){
+                $("#encrypt").on("click", function(){
+                    //待加密参数
+                    var encryptParam = $("#encryptParam").val();
+                    //加密后字符串
+                    var encryptStr;
+                    var onlyMD5 = $("#onlyMD5").is(':checked');
+                    var key = $("#key").val();
+                    //对待加密字符串进行MD5签名
+                    encryptStr = _cpp.signMD5();
+                    if(encryptStr==""){
+                        alert("需填写防篡改字段");
+                        return;
+                    }
+                    //RSA加密模式
+                    if(!onlyMD5){
+                        if(key==""){
+                            alert("请先初始化RSA");
+                            return;
+                        }
+                        encryptStr = _cpp.doEncrypt(encryptStr);
+                    }
+                    var data = {
+                        RSA_PARAM_ENCRYPTS:encryptParam,    //需防篡改的参数名，多个用","分开
+                        RSA_PARAM_ENCRYPTSTR:encryptStr,    //前端加密后的字符串
+                        RSA_PARAM_ONLYMD5:onlyMD5,          //可不传，默认false
+                        RSA_PARAM_KEY:key                   //请求秘钥生成接口返回的key
+                    };
+                    $("div[event=paramDiv]").each(function(){
+                        var divParam = $(this);
+                        var key = divParam.find("input[tag=param-key]").val();
+                        var value = divParam.find("input[tag=param-value]").val();
+                        data[key] = value;
+                    });
+                    $.ajax({
+                        url: ctx + "/common/encrypttoken/checkrascode",
+                        data:data,
+                        dataType:"json",
+                        success: function (data) {
+                            $("#result").text(data.result);
+                        }
+                    });
+
+                });
+                $("#init").on("click", function(){
+                    $.ajax({
+                        url: ctx + "/common/encrypttoken/initrascode",
+                        dataType:"json",
+                        success: function (data) {
+                            $("#modules").val(data.RSA_PUBLIC_MODULES);
+                            $("#exponent").val(data.RSA_PUBLIC_EXPONENT);
+                            $("#key").val(data.RSA_PARAM_KEY);
+                        }
+                    });
+                });
+                $("#add").on("click", function(){
+                    var divTem = $("div[event=paramDiv]:first");
+                    divTem.after(divTem.clone());
+                });
+            },
+            initFun: {
+                initAlias:function(){
+                    window._cpp = com.company.rsademo;
+                }
+            },
+            signMD5: function(){
+                //1.参数分装到数组中，以"param1=xxx"的形式
+                //2.数组按字母排序
+                //3.将排序后的字母组装成"param1=xxx&param2=xxx"的形式
+                //4.MD5签名
+                var params = new Array();
+                var encryptParam = $("#encryptParam").val().split(",");
+                $("div[event=paramDiv]").each(function(){
+                    var divParam = $(this);
+                    var key = divParam.find("input[tag=param-key]").val();
+                    var value = divParam.find("input[tag=param-value]").val();
+                    if($.inArray(key, encryptParam)>=0){
+                        params.push(key+"="+value);
+                    }
+                });
+                params = params.sort();
+                var paramStr = params.join("&");
+                return $.md5(paramStr).toUpperCase();
+            },
+            doEncrypt: function(encryptStr){
+                var rsa = new RSAKey();
+                rsa.setPublic($("#modules").val(), $("#exponent").val());
+                return rsa.encrypt(encryptStr);
+            }
+        };
+
+        $(document).ready(function(){
+            com.company.rsademo.init();
+        });
+    </script>
+
+</head>
+<body>
+    <button id="init" >初始化RSA</button>
+    key:<input id="key" size="100"> <br>
+    private modules:<input id="modules" size="130"> <br>
+    private exponent:<input id="exponent" size="100">
+
+    <br><br>
+    <button id="add" >增加输入框</button>
+    <div event="paramDiv">param-key:<input tag="param-key" size="50">param-val:<input tag="param-value" size="50"><br></div>
+
+    需防篡改的参数名，用","分开<input id="encryptParam" size="50"><br>
+    是否仅md5加密<input id="onlyMD5" type="checkbox"/><button id="encrypt" >开始验证</button>
+
+    <br><br>
+    加密后的字符串:<span id="encryptStr"></span>
+
+    <br><br>
+    <span id="result"></span>
+</body>
+</html>

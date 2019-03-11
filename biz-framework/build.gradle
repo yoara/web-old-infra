@@ -1,0 +1,149 @@
+//发布到仓库
+// 根据我们在likelib下gradle.properties中声明的版本名称,来分辨是Release版本还是 snapshots版本
+def isReleaseBuild() {
+    return !(VERSION_NAME.contains("SNAPSHOT")||VERSION_NAME.contains("snapshot"));
+}
+allprojects {
+    group "${GROUP_NAME}"
+    version "${VERSION_NAME}"
+    apply plugin: 'java'
+    apply plugin: 'maven'
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+    [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+    ext {
+        //parent
+        junit_version='4.12'
+        fastjson_version='1.1.45'
+        commons_lang_version='2.6'
+        commons_beanutils_version='1.9.2'
+        commons_codec_version='1.10'
+        httpcomponents_version='4.5.2'
+        httpcomponents_core_version='4.4.5'
+        commons_configuration_version='1.6'
+        commons_httpclient_version='3.1'
+        slf4j_version='1.7.12'
+        logback_version='1.1.3'
+
+        //core
+        spring_version='4.3.2.RELEASE'
+        velocity_version='1.7'
+        dom4j_version='1.6.1'
+        mysql_version='5.1.36'
+
+        //component-notify
+        javax_mail_version='1.4.7'
+
+        //component-logger
+        servlet_api_version='3.1.0'
+        eu_bitwalker_UserAgentUtils_version='1.18'
+        activemq_version='5.12.3'
+        aspectj_version='1.7.4'
+        cglib_version='3.1'
+
+        //component-payment
+        com_thoughtworks_xstream_version='1.4.7'
+
+        //component-web
+        hibernate_validator_version='4.3.1.Final'
+        aspectj_version='1.7.4'
+        commons_pool2_version='2.4.2'
+        poi_ooxml_version='3.9'
+        springfox_swagger_version='2.7.0'
+    }
+    //配置provided的作用域
+    configurations {
+        provided
+    }
+
+    sourceSets {
+        main.compileClasspath += configurations.provided
+        test.compileClasspath += configurations.provided
+        test.runtimeClasspath += configurations.provided
+    }
+
+    repositories {
+        //中央仓库
+//        mavenCentral()
+        mavenLocal()
+        repositories {
+            maven {
+                url "http://192.168.0.195:8081/nexus/content/groups/public_releases"
+//                权限认证
+//                credentials {
+//                    username 'user'
+//                    password 'password'
+//                }
+            }
+        }
+    }
+
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+    //发布源码
+    artifacts {
+        archives sourcesJar
+    }
+    // 声明变量记录maven库地址
+    def mavenRepositoryUrl
+    // 判断是发布到正式库,还是snapshots库
+    if (isReleaseBuild()) {
+        println '===========RELEASE BUILD=========='
+        // 下面的库地址指向的是我们私有仓库的Releases 仓库
+        mavenRepositoryUrl = 'http://192.168.0.195:8081/nexus/content/repositories/releases'
+    } else {
+        println '===========SNAPSHOTS BUILD==========='
+        // 下面的库地址指向的是我们私有仓库的snapshots 仓库
+        mavenRepositoryUrl = 'http://192.168.0.195:8081/nexus/content/repositories/snapshots'
+    }
+
+    uploadArchives {
+        repositories {
+            //发布到本地仓库
+            mavenLocal()
+            //发布到私服
+//            mavenDeployer {
+//                repository(url: mavenRepositoryUrl){
+//                    //用户名密码
+//                    authentication(userName: 'deployment', password: 'deployment')
+//                }
+//            }
+        }
+    }
+
+    configurations {
+        compile.exclude group:'commons-logging', module: 'commons-logging'
+        //第二种方式
+        // all*.exclude group: 'commons-logging', module: 'commons-logging'
+    }
+
+    //通用依赖管理
+    dependencies {
+        testCompile group: 'junit', name: 'junit', version: "${junit_version}"
+
+        compile (
+                [group: 'commons-lang', name: 'commons-lang', version: "${commons_lang_version}"],
+                [group: 'commons-beanutils', name: 'commons-beanutils', version: "${commons_beanutils_version}"],
+                [group: 'com.alibaba', name: 'fastjson', version: "${fastjson_version}"],
+                [group: 'org.slf4j', name: 'slf4j-api', version: "${slf4j_version}"],
+                [group: 'org.slf4j', name: 'jcl-over-slf4j', version: "${slf4j_version}"],
+                [group: 'ch.qos.logback', name: 'logback-classic', version: "${logback_version}"],
+                [group: 'ch.qos.logback', name: 'logback-core', version: "${logback_version}"],
+                [group: 'commons-httpclient', name: 'commons-httpclient', version: "${commons_httpclient_version}"],
+                [group: 'commons-configuration', name: 'commons-configuration', version: "${commons_configuration_version}"],
+                [group: 'commons-codec', name: 'commons-codec', version: "${commons_codec_version}"],
+                [group: 'org.apache.httpcomponents', name: 'httpclient', version: "${httpcomponents_version}"]
+        )
+    }
+    def abcString
+    task hello1(group: 'aaa') << {
+        println "I'm $project.name"
+        abcString='aa'
+    }
+    task hello2(group: 'aaa',dependsOn: hello1) << {
+        println "A $project.name"
+        println abcString
+    }
+}

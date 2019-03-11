@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>login</title>
+    <script language="JavaScript" type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="../js/core.js"></script>
+    <script>
+        Package("com.company.login");
+        com.company.login = {
+            init: function(){
+                this.initFun.initAlias();
+                this.initEvent();
+                this.initInfo();
+            },
+            initInfo: function(){
+            },
+            initEvent: function(){
+                $("input[key=userLogin]").on("click", function(){
+                    var jdiv = $(this).parent();
+                    var data = {
+                        username:jdiv.find("input:eq(0)").val(),
+                        password:jdiv.find("input:eq(1)").val()
+                    }
+                    $.ajax({
+                        url: ctx + "/login/user/loginin",
+                        data:data,
+                        dataType:"json",
+                        success: function (data) {
+                            if(data.result=='ok'){
+                                $("#result").text("done");
+                            }else{
+                                $("#result").text(data.msg);
+                            }
+                        }
+                    });
+                });
+                $("input[key=managerLogin]").on("click", function(){
+                    var jdiv = $(this).parent();
+                    var data = {
+                        username:jdiv.find("input:eq(0)").val(),
+                        password:jdiv.find("input:eq(1)").val()
+                    }
+                    $.ajax({
+                        url: ctx + "/login/manager/loginin",
+                        data:data,
+                        dataType:"json",
+                        success: function (data) {
+                            if(data.result=='ok'){
+                                $("#result").text("done");
+                            }else{
+                                $("#result").text(data.msg);
+                            }
+                        }
+                    });
+                });
+            },
+            initFun: {
+                initAlias:function(){
+                    window._cpp = com.company.login;
+                }
+            },
+        };
+
+        $(document).ready(function(){
+            com.company.login.init();
+        });
+    </script>
+</head>
+<body>
+    <p>登录</p>
+    <div>
+        登录名：<input />密码<input/>
+        <input key="userLogin" type="button" value="用户登录"/>
+        <input key="managerLogin" type="button" value="操作人员登录"/>
+    </div>
+    <p></p>
+    <p></p>
+    <span id="result"></span>
+
+    <ul>
+        <li><a href="authority/operate.html">系统配置</a></li>
+        <li><a href="rsademo/demo.html">加密demo</a></li>
+    </ul>
+</body>
+</html>

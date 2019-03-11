@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.company.seed.module.manager.dao.ManagerDao">
+	<resultMap id="managerResultMap" type="ManagerModel" >
+		<id property="id" column="FID"/>
+		<result property="phoneNumber" column="FPhoneNumber"/>
+		<result property="name" column="FName"/>
+		<result property="positionId" column="FKPositionId"/>
+		<result property="password" column="FPassword"/>
+		<result property="createTime" column="FCreateTime"/>
+		<result property="status" column="FStatus"/>
+	</resultMap>
+
+	<insert id="insertManager" parameterType="ManagerModel">
+		insert into test.t_base_manager(FID,FPhoneNumber,FName,FKPositionId,FPassword,FCreateTime,FStatus)
+		values(#{id},#{phoneNumber},#{name},#{positionId},#{password},#{createTime},#{status})
+	</insert>
+
+	<update id="updateManager" parameterType="ManagerModel">
+		update test.t_base_manager
+		<set>
+			<if test="phoneNumber!=null">FPhoneNumber=#{phoneNumber},</if>
+			<if test="name!=null">FName=#{name},</if>
+			<if test="positionId!=null">FKPositionId=#{positionId},</if>
+			<if test="password!=null">FPassword=#{password},</if>
+			<if test="createTime!=null">FCreateTime=#{createTime},</if>
+			<if test="status!=null">FStatus=#{status},</if>
+		</set>
+		where fid=#{id}
+	</update>
+
+
+	<select id="authenticateManager" resultMap="managerResultMap">
+		select * from t_base_manager where FPhoneNumber=#{userName} and FPassword = #{passwordMD5}
+	</select>
+
+	<select id="selectAll" resultMap="managerResultMap">
+		select fid,fphonenumber,fname,fkpositionid,fstatus,fcreatetime from t_base_manager
+	</select>
+</mapper>

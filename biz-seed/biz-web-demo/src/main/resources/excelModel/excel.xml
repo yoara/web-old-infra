@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<excels>
+    <excel id="orderExport" fileName="orderExport"
+           sqlMapsId="com.XXX.queryOrderForExport">
+        <column key="PRODUCTNAME" width="80">产品名称</column>
+        <column key="ANNUALIZED" width="80">年化收益率</column>
+        <column key="PERSONNAME" width="80">投资员工</column>
+        <column key="INVESTCYCLE" width="80">投资周期（月）</column>
+        <column key="CREATETIME" width="80">购买日期</column>
+        <column key="INTERESTSTARTTIME" width="80">起息日期</column>
+        <column key="NEEDPAY" width="80">应付利息</column>
+        <column key="HASPAY" width="80">已付利息</column>
+        <column key="CONTRACTNO" width="80">合同号</column>
+        <column key="BANKNO" width="80">收款账号</column>
+        <column key="BANK" width="80">收款银行</column>
+        <column key="PAYTYPE" width="80">支付方式</column>
+        <column key="PAYTIME" width="80">下次支付时间</column>
+    </excel>
+</excels>

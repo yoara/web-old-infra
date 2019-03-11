@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.company.seed.module.manager.dao.AuthorityDao">
+	<resultMap id="AuthorityLeafResult" type="AuthorityLeafModel">
+		<id column="FDefinition" property="definition"/>
+		<result column="FName" property="name"/>
+		<result column="FNodeName" property="nodeName"/>
+		<result column="FNodeDefinition" property="nodeDefinition"/>
+		<result column="FOrder" property="order"/>
+		<result column="FIsMenu" property="isMenu"/>
+	</resultMap>
+	<resultMap id="PositionAuthorityResult" type="PositionAuthorityModel">
+		<result column="fkpositionId" property="positionId"/>
+		<result column="FpositionName" property="positionName"/>
+		<result column="fkauthorityId" property="authorityId"/>
+	</resultMap>
+
+	<select id="queryAuthLeafsByManagerIdFromPosition" resultType="com.company.seed.module.manager.model.enums.AuthorityAnnotationEnums">
+		select tleaf.FDefinition from t_base_authority_leaf tleaf
+			LEFT JOIN t_base_position_authority tpa on tpa.FKAuthorityId=tleaf.FDefinition
+			LEFT JOIN t_base_position tposition on tpa.FKPositionId=tposition.FID
+			LEFT JOIN t_base_manager tmanager on  tmanager.FKPositionId=tposition.FID
+		where tmanager.FID=#{managerId} and tmanager.FStatus='ENABLED' and tposition.Fstatus='ENABLED'
+	</select>
+
+	<select id="queryAuthLeafsByManagerId" resultType="map">
+		select tma.FType,tleaf.FDefinition from t_base_authority_leaf tleaf
+		LEFT JOIN t_base_manager_authority tma on tma.FKAuthorityId=tleaf.FDefinition
+		LEFT JOIN t_base_manager tmanager on  tmanager.FID=tma.FKManagerId
+		where tma.FKManagerId=#{managerId} and tmanager.FStatus='ENABLED'
+	</select>
+
+	<select id="selectAll" resultMap="AuthorityLeafResult">
+		select tl.FDefinition as FDefinition,
+			tl.FName as FName,
+			tl.FOrder as FOrder,
+			tl.FIsMenu as FIsMenu,
+			tn.FKey as FNodeDefinition,
+			tn.FName as FNodeName
+			from t_base_authority_leaf tl
+			left join t_base_authority_node tn on tl.FKAuthorityNodeId=tn.FKey
+		order by tn.FKey
+	</select>
+
+	<select id="selectAllPositionWithAuthority" resultMap="PositionAuthorityResult">
+		select tp.FName as fpositionName ,
+			tpa.fkpositionId as fkpositionId ,
+			tpa.FKAuthorityId as FKAuthorityId
+			from t_base_position_authority tpa
+			LEFT join t_base_position tp on tp.fid= tpa.fkpositionId
+	</select>
+
+	<insert id="insertPositionWithAuth" parameterType="map">
+		insert into t_base_position_authority(fid,FKAuthorityId,FKPositionId)
+			values(uuid(),#{authorityId},#{positionId})
+	</insert>
+
+	<delete id="deletePositionWithAuth" parameterType="map">
+		delete from t_base_position_authority
+		where FKPositionId=#{positionId} and FKAuthorityId=#{authorityId}
+	</delete>
+
+	<select id="checkPositionHasAuthByAuthAndManager" resultType="int" parameterType="map">
+		select count(*) from t_base_position_authority tpa
+		LEFT JOIN t_base_position tbp on tbp.fid = tpa.FKPositionId
+		LEFT JOIN t_base_manager tbm on tbm.FKPositionId = tbp.fid
+		where tbm.fid=#{managerId} and tpa.FKAuthorityId=#{authorityId}
+	</select>
+
+	<insert id="insertManagerAuthority"	 parameterType="map">
+		insert t_base_manager_authority(FID,FKManagerId,FKAuthorityId,FType)
+			values(uuid(),#{authorityId},#{managerId},#{type})
+	</insert>
+
+	<delete id="removeManagerAuthority"	 parameterType="map">
+		delete from t_base_manager_authority
+		where FKManagerId=#{managerId} and FKAuthorityId=#{authorityId} and FType=#{type}
+	</delete>
+
+
+	<!-- init start -->
+	<delete id="clearAllAuthorityLeaf">
+		delete from t_base_authority_leaf
+	</delete>
+	<delete id="clearAllAuthorityNode">
+		delete from t_base_authority_node
+	</delete>
+	<insert id="insertAllAuthorityLeaf" parameterType="map">
+		insert into t_base_authority_leaf(FDefinition,FName,FKAuthorityNodeId)
+			values
+				<foreach collection="list" item="leaf" separator=",">
+					(#{leaf.definition},#{leaf.name},#{leaf.nodeDefinition})
+				</foreach>
+	</insert>
+	<insert id="insertAllAuthorityNode" parameterType="map">
+		insert into t_base_authority_node(FKey,FName,FKParentKey)
+			values
+				<foreach collection="list" item="node" separator=",">
+					(#{node.key},#{node.name},#{node.parentKey})
+				</foreach>
+	</insert>
+	<delete id="clearPositionWithAuthority" parameterType="map">
+		delete from t_base_position_authority
+		where FKAuthorityId not in
+			<foreach collection="list" item="leaf" separator="," open="(" close=")">
+				#{leaf.definition}
+			</foreach>
+	</delete>
+	<!-- init end -->
+</mapper>
