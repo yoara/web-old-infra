@@ -22,7 +22,7 @@
     "glob": "^7.1.1",
     "happypack": "^3.0.1",
     "html-webpack-plugin": "^2.24.1",
-    "jquery": "^1.11.3",
+    "jquery": "^3.5.0",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "webpack": "^1.14.0",
