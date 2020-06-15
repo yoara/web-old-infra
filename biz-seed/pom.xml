@@ -35,7 +35,7 @@
         <commons_httpclient_version>3.1</commons_httpclient_version>
         <httpcomponents_version>4.5.2</httpcomponents_version>
         <httpcomponents_core_version>4.4.5</httpcomponents_core_version>
-        <commons_collections_version>3.2</commons_collections_version>
+        <commons_collections_version>3.2.2</commons_collections_version>
         <commons-beanutils>1.9.2</commons-beanutils>
         <commons-codec>1.10</commons-codec>
         <guava_version>19.0</guava_version>
