@@ -45,7 +45,7 @@
         <servlet_api_version>3.1.0</servlet_api_version>
 
         <mysql_version>5.1.36</mysql_version>
-        <mybatis_version>3.3.0</mybatis_version>
+        <mybatis_version>3.5.6</mybatis_version>
         <mybatis_spring_version>1.2.3</mybatis_spring_version>
         <druid_version>1.0.15</druid_version>
 
