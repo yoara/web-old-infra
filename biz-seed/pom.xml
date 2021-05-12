@@ -53,7 +53,7 @@
         <spring_data_redis_version>1.7.2.RELEASE</spring_data_redis_version>
         <spring_data_solr_version>1.5.4.RELEASE</spring_data_solr_version>
         <jedis_version>2.9.0</jedis_version>
-        <apache_solr_version>4.10.4</apache_solr_version>
+        <apache_solr_version>8.8.2</apache_solr_version>
         <xbean_spring_version>4.1</xbean_spring_version>
 
         <aspectj_version>1.7.4</aspectj_version>
